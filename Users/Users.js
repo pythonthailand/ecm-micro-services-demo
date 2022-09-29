@@ -3,9 +3,11 @@ const express  = require("express");
 const app = express()
 const bodyParser = require("body-parser");
 const axios = require("axios");
+require("dotenv").config();
 
 app.use(bodyParser.urlencoded({extended: true})); 
 app.use(bodyParser.json()); 
+
 
 // Load Mongoose
 const mongoose = require("mongoose");
@@ -13,7 +15,7 @@ const mongoose = require("mongoose");
 // Global User Object which will be the instance of MongoDB document
 var User;
 async function connectMongoose() {
-	await mongoose.connect("${process.env.mongoDbUrl}", { useNewUrlParser: true, useUnifiedTopology:true }).then(() =>{
+	await mongoose.connect(process.env.mongoDbUrl, { useNewUrlParser: true, useUnifiedTopology:true }).then(() =>{
 		console.log("mongoose connected..")
 	})
 	require("./User")
@@ -150,6 +152,6 @@ app.delete("/users/:uid/orders", async (req, res) => {
 })
 
 // APP listening on port 4040
-app.listen(5050, () => {
+app.listen(process.env.port, () => {
 	console.log("Up and running! -- This is our Users service")
 })

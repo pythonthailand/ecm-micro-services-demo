@@ -2,6 +2,7 @@
 const express  = require("express");
 const app = express()
 const bodyParser = require("body-parser");
+require("dotenv").config();
 
 app.use(bodyParser.urlencoded({extended: true})); 
 app.use(bodyParser.json()); 
@@ -12,7 +13,7 @@ const mongoose = require("mongoose");
 // Global Order Object which will be the instance of MongoDB document
 var Order;
 async function connectMongoose() {
-	await mongoose.connect("{process.env.mongoDbUrl}", { useNewUrlParser: true, useUnifiedTopology:true }).then(() =>{
+	await mongoose.connect(process.env.mongoDbUrl, { useNewUrlParser: true, useUnifiedTopology:true }).then(() =>{
 		console.log("mongoose connected..")
 	})
 	require("./Order");
@@ -101,6 +102,6 @@ app.delete("/orders", async (req, res) => {
 })
 
 // APP listening on port 5151
-app.listen(5151, () => {
+app.listen(process.env.port, () => {
 	console.log("Up and running! -- This is our Orders service")
 })
